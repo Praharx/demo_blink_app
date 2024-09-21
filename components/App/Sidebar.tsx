@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-export function SidebarDemo({element}: {element: any}) {
+export function SidebarDemo({children}: {children: React.ReactNode}) {
   const links = [
     {
       label: "Dashboard",
@@ -80,7 +80,7 @@ export function SidebarDemo({element}: {element: any}) {
           </div>
         </SidebarBody>
       </Sidebar>
-      {element}
+      {children}
     </div>
   );
 }

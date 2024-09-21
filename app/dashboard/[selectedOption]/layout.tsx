@@ -16,7 +16,10 @@ export default function RootLayout({
       <body
         className={`antialiased`}
       >
-      <SidebarDemo element={children}/> 
+      <SidebarDemo >
+        {children}
+        </SidebarDemo> 
+
       </body>
     </html>
   );

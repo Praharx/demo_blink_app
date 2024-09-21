@@ -1,11 +1,78 @@
-import React from 'react'
+import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import DrawingCanvas from './DrawingCanvas';
+import { Button } from "@/components/ui/button";
+import { useDrag } from 'react-dnd';
 
-function NewBlink() {
-  return (
-   <div className='min-h-screen w-full bg-black border border-neutral-700'>
-      
-   </div>
-  )
+interface DraggableButtonProps {
+  content: string;
+  type: string;
 }
 
-export default NewBlink
+const DraggableButton: React.FC<DraggableButtonProps> = ({ content, type }) => {
+  const [, drag] = useDrag({
+    type: 'BUTTON',
+    item: { content, type },
+  });
+
+  return (
+    <Button ref={drag} className="w-full mb-2 bg-[#1F2226] text-white border border-gray-600 hover:bg-gray-700 transition-colors duration-200">
+      {content}
+    </Button>
+  );
+};
+
+const NewBlink: React.FC = () => {
+  const buttonTypes = [
+    { content: "Text Input", type: "text" },
+    { content: "Email Input", type: "email" },
+    { content: "URL Input", type: "url" },
+    { content: "Number Input", type: "number" },
+    { content: "Date Input", type: "date" },
+    { content: "DateTime Input", type: "datetime-local" },
+    { content: "Checkbox", type: "checkbox" },
+    { content: "Radio Button", type: "radio" },
+    { content: "Textarea", type: "textarea" },
+    { content: "Select Dropdown", type: "select" },
+  ];
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <div className='flex flex-col md:flex-row min-h-screen w-screen bg-neutral-900'>
+        {/* Button Section */}
+        <div className='w-full md:w-1/4 lg:w-1/5 p-4 border-b md:border-b-0 md:border-r border-neutral-700 flex flex-col overflow-y-auto'>
+          {buttonTypes.map((button, index) => (
+            <DraggableButton
+              key={index}
+              content={button.content}
+              type={button.type}
+            />
+          ))}
+        </div>
+
+        {/* Drawing Canvas Section */}
+        <div className='w-full md:w-3/4 lg:w-4/5 xl:w-3/5 p-4 flex-grow'>
+          <DrawingCanvas />
+        </div>
+
+        {/* Chatbot Section */}
+        <div className='hidden xl:block w-full xl:w-1/5 p-4 border-t xl:border-t-0 xl:border-l border-neutral-700'>
+          <div className='bg-gray-900 rounded p-4 h-full flex flex-col'>
+            <p className='text-white mb-2'>Chatbot Area</p>
+            <div className='flex-grow overflow-y-auto mb-2 min-h-[100px] xl:min-h-0'>
+              {/* Chat messages would go here */}
+            </div>
+            <input
+              type='text'
+              placeholder='Type your message...'
+              className='w-full bg-gray-800 text-white p-2 rounded'
+            />
+          </div>
+        </div>
+      </div>
+    </DndProvider>
+  );
+}
+
+export default NewBlink;
