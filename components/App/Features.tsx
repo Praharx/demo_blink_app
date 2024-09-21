@@ -46,12 +46,11 @@ export function FeaturesSectionDemo() {
     <div className="relative z-20 py-10 lg:py-40 max-w-7xl mx-auto">
       <div className="px-8">
         <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium   text-white">
-          Packed with thousands of features
+          Packed with features
         </h4>
 
         <p className="text-sm lg:text-base  max-w-2xl  my-4 mx-auto text-center font-normal  text-neutral-300">
-          From Image generation to video generation, Everything AI has APIs for
-          literally everything. It can even create this website copy for you.
+          
         </p>
       </div>
 

@@ -1,9 +1,11 @@
+"use client"
+
 import React from 'react'
-import { SidebarDemo } from '@/components/App/Sidebar'
+import { SidebarDemo, Dashboard } from '@/components/App/Sidebar'
 function page() {
   return (
     <div className='w-screen h-screen bg-black'>
-      <SidebarDemo/>
+      <SidebarDemo element={<Dashboard/>}/>
     </div>
   )
 }

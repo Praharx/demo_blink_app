@@ -12,18 +12,18 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-export function SidebarDemo() {
+export function SidebarDemo({element}: {element: any}) {
   const links = [
     {
       label: "Dashboard",
-      href: "#",
+      href: "/dashboard",
       icon: (
         <IconBrandTabler className="text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Profile",
-      href: "#",
+      label: "New Blink",
+      href: "/dashboard/newBlink",
       icon: (
         <IconUserBolt className="text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -80,7 +80,7 @@ export function SidebarDemo() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <Dashboard />
+      {element}
     </div>
   );
 }
@@ -103,17 +103,13 @@ export const Logo = () => {
 };
 export const LogoIcon = () => {
   return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6  bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-    </Link>
+    <div>
+
+    </div>
   );
 };
 
-// Dummy dashboard component with content
-const Dashboard = () => {
+export const Dashboard = () => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border  border-neutral-700  bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
@@ -121,7 +117,7 @@ const Dashboard = () => {
           {[...new Array(4)].map((i) => (
             <div
               key={"first-array" + i}
-              className="h-20 w-full rounded-lg bg-neutral-800 animate-pulse"
+               className="h-20 w-full rounded-lg bg-neutral-800 animate-pulse"
             ></div>
           ))}
         </div>
@@ -129,7 +125,7 @@ const Dashboard = () => {
           {[...new Array(2)].map((i) => (
             <div
               key={"second-array" + i}
-              className="h-full w-full rounded-lg    bg-neutral-800 animate-pulse"
+              className="h-full w-full rounded-lg bg-neutral-800 animate-pulse"
             ></div>
           ))}
         </div>
