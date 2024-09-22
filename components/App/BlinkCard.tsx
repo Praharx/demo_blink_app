@@ -58,7 +58,7 @@ const DrawingCanvas: React.FC = () => {
         console.error('No file selected');
         return;
       }
-
+      
       const formData = new FormData();
       formData.set("bucket", response.data.fields["bucket"]);
       formData.set("X-Amz-Algorithm", response.data.fields["X-Amz-Algorithm"]);
