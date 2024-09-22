@@ -8,7 +8,9 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { Button } from "./button";
 export const FloatingNav = ({
   navItems,
   className,
@@ -20,6 +22,7 @@ export const FloatingNav = ({
   }[];
   className?: string;
 }) => {
+  const {publicKey} = useWallet();
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
 
@@ -61,10 +64,25 @@ export const FloatingNav = ({
             <span className="hidden sm:block text-sm">{navItem.name}</span>
           </Link>
         ))}
-        <button className="border text-sm font-medium relative border-neutral-200 border-white/[0.2] text-white px-4 py-2 rounded-full">
+        {publicKey ? (
+          <div className="relative">
+            <Button className="border text-sm font-medium relative border-neutral-200 border-white/[0.2] text-white px-4 py-2 rounded-full">
+              <span>{`${publicKey.toString().slice(0, 4)}...${publicKey.toString().slice(-4)}`}</span>
+              <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent h-px" />
+            </Button>
+            <div className="absolute right-0 mt-2 w-48 bg-black border border-white/[0.2] rounded-md shadow-lg z-50">
+              <Button className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Disconnect Wallet</Button>
+              <Button className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Change Wallet</Button>
+              <Button className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Copy Address</Button>
+            </div>
+          </div>
+        ) : (
+          <WalletMultiButton style={{ border: '1px solid rgba(255, 255, 255, 0.2)', color: 'white', padding: '8px 16px', borderRadius: '9999px' }} />
+        )}
+        <Button className="border text-sm font-medium relative border-neutral-200 border-white/[0.2] text-white px-4 py-2 rounded-full">
           <span>Login</span>
           <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
-        </button>
+        </Button>
       </motion.div>
     </AnimatePresence>
   );
