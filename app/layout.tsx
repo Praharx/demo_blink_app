@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import "./globals.css";
 import AppWalletProvider from "@/components/App/AppWalletProvider";
+export const runtime = "edge";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

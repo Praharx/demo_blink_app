@@ -4,7 +4,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import DrawingCanvas from './BlinkCard';
 import { Button } from "@/components/ui/button";
 import { useDrag } from 'react-dnd';
-
+export const runtime = "edge";
 interface DraggableButtonProps {
   content: string;
   type: string;

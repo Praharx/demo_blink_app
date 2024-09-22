@@ -1,6 +1,6 @@
 import React from "react";
 import { SpotlightPreview } from "./Spotlight";
-
+export const runtime = "edge";
 export default function GridBackgroundDemo() {
   return (
     <div className="h-[40rem] w-full bg-black bg-grid-white/[0.2] relative flex items-center justify-center">

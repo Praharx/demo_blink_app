@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { IconBrandYoutubeFilled } from "@tabler/icons-react";
 import Link from "next/link";
 
+export const runtime = "edge";
 export function FeaturesSectionDemo() {
   const features = [
     {

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import axios from 'axios';
 
 const CLOUDFRONT_URL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
-
+export const runtime = "edge";
 interface DroppedItem {
   id: number;
   content: string;
@@ -44,7 +44,7 @@ const DrawingCanvas: React.FC = () => {
     setUploading(true);
 
     try {
-      const response = await axios.get(`${window.location.origin}/api/app/getPresignedUrl`, {
+      const response: any = await axios.get(`${window.location.origin}/api/app/getPresignedUrl`, {
         withCredentials: true,
         headers: {
           "Authorization": "sk_test_lAcxYuFjIzlH30eyImE5V70A4Wdpt0f18MWZvB2A6B"

@@ -2,6 +2,7 @@ import { FeaturesSectionDemo } from "@/components/App/Features";
 
 import GridBackgroundDemo from "@/components/App/gridBackground";
 import { FloatingNav } from "@/components/ui/floating-navbar";
+export const runtime = "edge";
 export default function Home() {
 
   return (

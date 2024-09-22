@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import {  SignedIn,UserButton,useUser } from '@clerk/nextjs'
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-
+export const runtime = "edge";
 export function SidebarDemo({children}: {children: any}) {
   const { user, isLoaded, isSignedIn } = useUser();
   if(!isLoaded || !isSignedIn) {

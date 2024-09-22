@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import CurrentBlink from './CurrentBlinks';
 import NewBlink from './NewBlink';
-
+export const runtime = "edge";
 const renderContent = (selectedOption:string) => {
     switch (selectedOption) {
       case "currentBlink":
