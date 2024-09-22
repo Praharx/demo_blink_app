@@ -46,7 +46,7 @@ export function SpotlightPreview() {
             whileTap={{ scale: 0.95 }}
             className="px-6 py-3 bg-blue-600 hover:bg-blue-700 transition duration-200 rounded-lg text-white font-semibold shadow-[0px_2px_0px_0px_#FFFFFF40_inset]"
           >
-              Order now
+              Try Now
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.05 }}
