@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { SidebarDemo } from '@/components/App/Sidebar'
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function RootLayout({
   children,
@@ -10,15 +11,14 @@ export default function RootLayout({
 }>) {
 
   const {selectedOption} = useParams();
-
   return (
     <html lang="en">
       <body
         className={`antialiased`}
       >
-      <SidebarDemo >
+      <SidebarDemo>
         {children}
-        </SidebarDemo> 
+      </SidebarDemo> 
 
       </body>
     </html>

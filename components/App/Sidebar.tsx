@@ -13,7 +13,7 @@ import {  SignedIn,UserButton,useUser } from '@clerk/nextjs'
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-export function SidebarDemo({children}: {children: React.ReactNode}) {
+export function SidebarDemo({children}: {children: any}) {
   const { user, isLoaded, isSignedIn } = useUser();
   if(!isLoaded || !isSignedIn) {
     return null;
@@ -93,7 +93,6 @@ export const Logo = () => {
       href="#"
       className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
     >
-      <div className="h-5 w-6  bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -107,7 +106,7 @@ export const Logo = () => {
 export const LogoIcon = () => {
   return (
     <div>
-
+      
     </div>
   );
 };

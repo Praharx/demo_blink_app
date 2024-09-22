@@ -17,6 +17,7 @@ const DraggableButton: React.FC<DraggableButtonProps> = ({ content, type }) => {
   });
 
   return (
+    //@ts-ignore
     <Button ref={drag} className="w-full mb-2 bg-[#1F2226] text-white border border-gray-600 hover:bg-gray-700 transition-colors duration-200">
       {content}
     </Button>
@@ -57,17 +58,17 @@ const NewBlink: React.FC = () => {
         </div>
 
         {/* Chatbot Section */}
-        <div className='hidden xl:block w-full xl:w-1/5 p-4 border-t xl:border-t-0 xl:border-l border-neutral-700'>
+        <div className='hidden xl:block w-full xl:w-1/5 mr-8 p-4 border-t xl:border-t-0 xl:border-l border-neutral-700'>
           <div className='bg-gray-900 rounded p-4 h-full flex flex-col'>
-            <p className='text-white mb-2'>Chatbot Area</p>
+            <p className='text-white mb-2'>Instructions</p>
             <div className='flex-grow overflow-y-auto mb-2 min-h-[100px] xl:min-h-0'>
-              {/* Chat messages would go here */}
+              <ul className='text-white list-disc pl-5'>
+                <li>Drag and drop elements from the left panel to the canvas.</li>
+                <li>Use the canvas to arrange your elements as needed.</li>
+                <li>Click on an element to edit its properties.</li>
+                <li>Save your work frequently to avoid losing progress.</li>
+              </ul>
             </div>
-            <input
-              type='text'
-              placeholder='Type your message...'
-              className='w-full bg-gray-800 text-white p-2 rounded'
-            />
           </div>
         </div>
       </div>
