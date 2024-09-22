@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { Button } from "./button";
 export const FloatingNav = ({
   navItems,
@@ -22,13 +23,15 @@ export const FloatingNav = ({
   }[];
   className?: string;
 }) => {
-  const {publicKey} = useWallet();
+  const { publicKey, disconnect } = useWallet();
+  const { setVisible } = useWalletModal();
   const { scrollYProgress } = useScroll();
-  const [visible, setVisible] = useState(true);
+  const [visible, setDropDownVisible] = useState(true);
+  const [dropdownVisible, setDropdownVisible] = useState(false); // New state for dropdown visibility
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
-      setVisible(current <= 0.05);
+      setDropDownVisible(current <= 0.05);
     }
   });
 
@@ -66,15 +69,20 @@ export const FloatingNav = ({
         ))}
         {publicKey ? (
           <div className="relative">
-            <Button className="border text-sm font-medium relative border-neutral-200 border-white/[0.2] text-white px-4 py-2 rounded-full">
+            <Button
+              className="border text-sm font-medium relative border-neutral-200 border-white/[0.2] text-white px-4 py-2 rounded-full"
+              onClick={() => setDropdownVisible(!dropdownVisible)} // Toggle dropdown visibility
+            >
               <span>{`${publicKey.toString().slice(0, 4)}...${publicKey.toString().slice(-4)}`}</span>
               <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent h-px" />
             </Button>
-            <div className="absolute right-0 mt-2 w-48 bg-black border border-white/[0.2] rounded-md shadow-lg z-50">
-              <Button className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Disconnect Wallet</Button>
-              <Button className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Change Wallet</Button>
-              <Button className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Copy Address</Button>
-            </div>
+            {dropdownVisible && ( // Conditionally render the dropdown
+              <div className="absolute right-0 mt-2 w-48 bg-black border border-white/[0.2] rounded-md shadow-lg z-50">
+                <Button onClick={() => disconnect()} className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Disconnect Wallet</Button>
+                <Button onClick={() => setVisible(true)} className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Change Wallet</Button>
+                <Button onClick={() => navigator.clipboard.writeText(publicKey.toString())} className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-700">Copy Address</Button>
+              </div>
+            )}
           </div>
         ) : (
           <WalletMultiButton style={{ border: '1px solid rgba(255, 255, 255, 0.2)', color: 'white', padding: '8px 16px', borderRadius: '9999px' }} />
