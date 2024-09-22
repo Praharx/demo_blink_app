@@ -23,6 +23,7 @@ interface UploadProps {
   imagePreview: string | null,
   setImagePreview: Dispatch<SetStateAction<string | null>>
 }
+
 const DrawingCanvas: React.FC = () => {
   const [droppedItems, setDroppedItems] = useState<DroppedItem[]>([]);
   const [blinkName, setBlinkName] = useState('<Blink Name>');
@@ -39,7 +40,7 @@ const DrawingCanvas: React.FC = () => {
     },
   });
 
-  async function chooseFile(e: any) {
+  async function chooseFile(e: React.ChangeEvent<HTMLInputElement>) {
     setUploading(true);
 
     try {
@@ -132,15 +133,34 @@ const DrawingCanvas: React.FC = () => {
       <div className="text-center mb-4">
         <div className="w-full relative">
           <img src={imagePreview} alt="Solana Foundation" className="mx-auto w-full mb-2 rounded" />
-          <div className="absolute top-0 left-0">
-            <Input 
-              type="file" 
-              onClick={async (e) => {
-                await chooseFile(e)
-              }} 
-              className='' 
-            />
+          <div className="absolute top-2 right-2">
+            <button
+              onClick={() => document.getElementById('fileInput')?.click()}
+              className="bg-white p-2 rounded-full shadow-md"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
           </div>
+          <input
+            id="fileInput"
+            type="file"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setUploading(true);
+                await chooseFile(e);
+                setUploading(false);
+              }
+            }}
+            className="hidden"
+          />
+          {uploading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
+              <div className="text-white">Uploading...</div>
+            </div>
+          )}
         </div>
         <input
           type="text"
@@ -174,6 +194,6 @@ const DrawingCanvas: React.FC = () => {
       </form>
     </div>
   );
-}
+};
 
 export default DrawingCanvas;
