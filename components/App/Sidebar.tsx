@@ -9,10 +9,16 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import {  SignedIn,UserButton,useUser } from '@clerk/nextjs'
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 export function SidebarDemo({children}: {children: React.ReactNode}) {
+  const { user, isLoaded, isSignedIn } = useUser();
+  if(!isLoaded || !isSignedIn) {
+    return null;
+  }
+  console.log(user);
   const links = [
     {
       label: "Dashboard",
@@ -62,21 +68,18 @@ export function SidebarDemo({children}: {children: React.ReactNode}) {
             </div>
           </div>
           <div>
-            <SidebarLink
+          <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: `${user?.firstName}`,
                 href: "#",
                 icon: (
-                  <Image
-                    src="https://assets.aceternity.com/manu.png"
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
-                    width={50}
-                    height={50}
-                    alt="Avatar"
-                  />
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
                 ),
               }}
             />
+          
           </div>
         </SidebarBody>
       </Sidebar>

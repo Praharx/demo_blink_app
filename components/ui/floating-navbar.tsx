@@ -1,4 +1,5 @@
 "use client";
+import { SignInButton,SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import React, { useState } from "react";
 import {
   motion,
@@ -85,12 +86,20 @@ export const FloatingNav = ({
             )}
           </div>
         ) : (
-          <WalletMultiButton style={{ border: '1px solid rgba(255, 255, 255, 0.2)', color: 'white', padding: '8px 16px', borderRadius: '9999px' }} />
+          <WalletMultiButton style={{ border: '1px solid rgba(255, 255, 255, 0.2)', backgroundColor: 'white',color: 'black', padding: '8px 16px', borderRadius: '9999px', height: '32px' }} />
         )}
+        <SignInButton>
         <Button className="border text-sm font-medium relative border-neutral-200 border-white/[0.2] text-white px-4 py-2 rounded-full">
           <span>Login</span>
           <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
         </Button>
+        </SignInButton>
+        <SignUpButton>
+        <Button className="border text-sm font-medium relative border-neutral-200 border-white/[0.2] text-white px-4 py-2 rounded-full">
+          <span>SignUp</span>
+          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+        </Button>
+        </SignUpButton>
       </motion.div>
     </AnimatePresence>
   );

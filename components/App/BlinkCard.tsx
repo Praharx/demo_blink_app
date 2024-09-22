@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { Button } from "@/components/ui/button";
+import axios from 'axios';
+
+const CLOUDFRONT_URL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
 
 interface DroppedItem {
   id: number;
@@ -13,6 +16,12 @@ interface DragItem {
   content: string;
 }
 
+interface UploadProps {
+  uploading:Boolean,
+  setUploading:Dispatch<SetStateAction<boolean>>, 
+  imagePreview: string | null,
+  setImagePreview: Dispatch<SetStateAction<string | null>>
+}
 const DrawingCanvas: React.FC = () => {
   const [droppedItems, setDroppedItems] = useState<DroppedItem[]>([]);
   const [blinkName, setBlinkName] = useState('<Blink Name>');
@@ -26,6 +35,49 @@ const DrawingCanvas: React.FC = () => {
       setDroppedItems((prevItems) => [...prevItems, newItem]);
     },
   });
+
+  async function chooseFile(e: React.ChangeEvent<HTMLInputElement>, {uploading, setUploading,imagePreview,setImagePreview}:UploadProps) {
+    setUploading(true);
+
+    try 
+    {
+        const response = await axios.get(`${window.location.origin}/api/app/getPresignedUrl`, { 
+            headers: {
+                Authorization: localStorage.getItem("token")
+            }
+        });
+        console.log(response);
+        const preSignedUrl = response.data.preSignedUrl;
+        const file = e.target.files?.[0];
+        
+        if (!file) {
+            console.error('No file selected');
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.set("bucket", response.data.fields["bucket"]);
+        formData.set("X-Amz-Algorithm", response.data.fields["X-Amz-Algorithm"]);
+        formData.set("X-Amz-Credential", response.data.fields["X-Amz-Credential"]);
+        formData.set("X-Amz-Date", response.data.fields["X-Amz-Date"]);
+        formData.set("key", response.data.fields["key"]);
+        formData.set("Policy", response.data.fields["Policy"]);
+        formData.set("X-Amz-Signature", response.data.fields["X-Amz-Signature"]);
+        formData.set("Content-Type", response.data.fields["Content-Type"]);
+        formData.append("file", file);
+        
+        console.log(preSignedUrl,"::::",formData);
+        const res = await axios.post(preSignedUrl, formData);
+
+        console.log(`${CLOUDFRONT_URL}${response.data.fields.key}`)
+        setImagePreview(`${CLOUDFRONT_URL}${response.data.fields.key}`);
+        setUploading(false)
+
+    } catch (e) {
+        console.log(e);
+        setUploading(false);
+    }
+}
 
   const renderInput = (item: DroppedItem) => {
     const baseClassName = "w-full px-3 sm:px-4 py-2 text-sm sm:text-base text-white bg-[#1F2226] border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500";
@@ -71,6 +123,7 @@ const DrawingCanvas: React.FC = () => {
   };
 
   return (
+    //@ts-ignore
     <div ref={drop} className="bg-[#1F2226] shadow-blue-400 my-4 p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-[90vw] sm:max-w-sm mx-auto">
       {/* Header */}
       <div className="text-center mb-4">
