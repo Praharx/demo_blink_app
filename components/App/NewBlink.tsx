@@ -57,12 +57,12 @@ const NewBlink: React.FC = () => {
           <DrawingCanvas />
         </div>
 
-        {/* Chatbot Section */}
+        {/* Instructions Section */}
         <div className='hidden xl:block w-full xl:w-1/5 mr-8 p-4 border-t xl:border-t-0 xl:border-l border-neutral-700'>
-          <div className='bg-gray-900 rounded p-4 h-full flex flex-col'>
-            <p className='text-white mb-2'>Instructions</p>
+          <div className='bg-neutral-900 rounded p-4 font-serif text-gray-400 h-full flex flex-col'>
+            <p className='mb-2 font-bold text-white text-xl'>Instructions</p>
             <div className='flex-grow overflow-y-auto mb-2 min-h-[100px] xl:min-h-0'>
-              <ul className='text-white list-disc pl-5'>
+              <ul className=' list-disc pl-5'>
                 <li>Drag and drop elements from the left panel to the canvas.</li>
                 <li>Use the canvas to arrange your elements as needed.</li>
                 <li>Click on an element to edit its properties.</li>
