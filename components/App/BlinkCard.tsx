@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import axios from 'axios';
 
 const CLOUDFRONT_URL = process.env.NEXT_PUBLIC_CLOUDFRONT_URL;
@@ -17,8 +18,8 @@ interface DragItem {
 }
 
 interface UploadProps {
-  uploading:Boolean,
-  setUploading:Dispatch<SetStateAction<boolean>>, 
+  uploading: Boolean,
+  setUploading: Dispatch<SetStateAction<boolean>>,
   imagePreview: string | null,
   setImagePreview: Dispatch<SetStateAction<string | null>>
 }
@@ -27,6 +28,8 @@ const DrawingCanvas: React.FC = () => {
   const [blinkName, setBlinkName] = useState('<Blink Name>');
   const [blinkDescription, setBlinkDescription] = useState('<Blink Description>');
   const [submitText, setSubmitText] = useState('<Your Submit Text>');
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState("https://wallpapercave.com/wp/wp9800926.jpg");
 
   const [, drop] = useDrop<DragItem, void, {}>({
     accept: 'BUTTON',
@@ -36,52 +39,52 @@ const DrawingCanvas: React.FC = () => {
     },
   });
 
-  async function chooseFile(e: React.ChangeEvent<HTMLInputElement>, {uploading, setUploading,imagePreview,setImagePreview}:UploadProps) {
+  async function chooseFile(e: any) {
     setUploading(true);
 
-    try 
-    {
-        const response = await axios.get(`${window.location.origin}/api/app/getPresignedUrl`, { 
-            headers: {
-                Authorization: localStorage.getItem("token")
-            }
-        });
-        console.log(response);
-        const preSignedUrl = response.data.preSignedUrl;
-        const file = e.target.files?.[0];
-        
-        if (!file) {
-            console.error('No file selected');
-            return;
+    try {
+      const response = await axios.get(`${window.location.origin}/api/app/getPresignedUrl`, {
+        withCredentials: true,
+        headers: {
+          "Authorization": "sk_test_lAcxYuFjIzlH30eyImE5V70A4Wdpt0f18MWZvB2A6B"
         }
-        
-        const formData = new FormData();
-        formData.set("bucket", response.data.fields["bucket"]);
-        formData.set("X-Amz-Algorithm", response.data.fields["X-Amz-Algorithm"]);
-        formData.set("X-Amz-Credential", response.data.fields["X-Amz-Credential"]);
-        formData.set("X-Amz-Date", response.data.fields["X-Amz-Date"]);
-        formData.set("key", response.data.fields["key"]);
-        formData.set("Policy", response.data.fields["Policy"]);
-        formData.set("X-Amz-Signature", response.data.fields["X-Amz-Signature"]);
-        formData.set("Content-Type", response.data.fields["Content-Type"]);
-        formData.append("file", file);
-        
-        console.log(preSignedUrl,"::::",formData);
-        const res = await axios.post(preSignedUrl, formData);
+      });
+      console.log(response);
+      const preSignedUrl = response.data.preSignedUrl;
+      const file = e.target.files?.[0];
 
-        console.log(`${CLOUDFRONT_URL}${response.data.fields.key}`)
-        setImagePreview(`${CLOUDFRONT_URL}${response.data.fields.key}`);
-        setUploading(false) 
+      if (!file) {
+        console.error('No file selected');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.set("bucket", response.data.fields["bucket"]);
+      formData.set("X-Amz-Algorithm", response.data.fields["X-Amz-Algorithm"]);
+      formData.set("X-Amz-Credential", response.data.fields["X-Amz-Credential"]);
+      formData.set("X-Amz-Date", response.data.fields["X-Amz-Date"]);
+      formData.set("key", response.data.fields["key"]);
+      formData.set("Policy", response.data.fields["Policy"]);
+      formData.set("X-Amz-Signature", response.data.fields["X-Amz-Signature"]);
+      formData.set("Content-Type", response.data.fields["Content-Type"]);
+      formData.append("file", file);
+
+      console.log(preSignedUrl, "::::", formData);
+      const res = await axios.post(preSignedUrl, formData);
+
+      console.log(`${CLOUDFRONT_URL}${response.data.fields.key}`)
+      setImagePreview(`${CLOUDFRONT_URL}${response.data.fields.key}`);
+      setUploading(false)
 
     } catch (e) {
-        console.log(e);
-        setUploading(false);
+      console.log(e);
+      setUploading(false);
     }
-}
+  }
 
   const renderInput = (item: DroppedItem) => {
     const baseClassName = "w-full px-3 sm:px-4 py-2 text-sm sm:text-base text-white bg-[#1F2226] border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500";
-    
+
     switch (item.type) {
       case 'checkbox':
       case 'radio':
@@ -127,7 +130,18 @@ const DrawingCanvas: React.FC = () => {
     <div ref={drop} className="bg-[#1F2226] shadow-blue-400 my-4 p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-[90vw] sm:max-w-sm mx-auto">
       {/* Header */}
       <div className="text-center mb-4">
-        <img src="https://wallpapercave.com/wp/wp9800926.jpg" alt="Solana Foundation" className="mx-auto w-full mb-2 rounded" />
+        <div className="w-full relative">
+          <img src={imagePreview} alt="Solana Foundation" className="mx-auto w-full mb-2 rounded" />
+          <div className="absolute top-0 left-0">
+            <Input 
+              type="file" 
+              onClick={async (e) => {
+                await chooseFile(e)
+              }} 
+              className='' 
+            />
+          </div>
+        </div>
         <input
           type="text"
           value={blinkName}
@@ -150,7 +164,7 @@ const DrawingCanvas: React.FC = () => {
             {renderInput(item)}
           </div>
         ))}
-        
+
         <input
           type="text"
           value={submitText}

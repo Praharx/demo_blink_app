@@ -18,7 +18,7 @@ export function SidebarDemo({children}: {children: React.ReactNode}) {
   if(!isLoaded || !isSignedIn) {
     return null;
   }
-  console.log(user);
+
   const links = [
     {
       label: "Dashboard",
