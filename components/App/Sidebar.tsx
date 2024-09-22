@@ -70,7 +70,7 @@ export function SidebarDemo({children}: {children: React.ReactNode}) {
           <div>
           <SidebarLink
               link={{
-                label: `${user?.firstName}`,
+                label: `${user?.username}`,
                 href: "#",
                 icon: (
                 <SignedIn>

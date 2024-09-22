@@ -71,7 +71,7 @@ const DrawingCanvas: React.FC = () => {
 
         console.log(`${CLOUDFRONT_URL}${response.data.fields.key}`)
         setImagePreview(`${CLOUDFRONT_URL}${response.data.fields.key}`);
-        setUploading(false)
+        setUploading(false) 
 
     } catch (e) {
         console.log(e);
